@@ -1,0 +1,17 @@
+# dependencies
+node_modules
+
+# sst
+.sst
+.build
+
+# frontend
+frontend/build
+frontend/dist
+.svelte-kit
+
+# misc
+.DS_Store
+
+# local env files
+.env*.local
