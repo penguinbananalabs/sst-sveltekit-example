@@ -9,7 +9,6 @@ const config = {
 
   kit: {
     prerender: { default: true },
-    outDir: 'dist',
     adapter: adapter(),
   },
 };
