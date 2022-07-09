@@ -8,17 +8,7 @@ on:
       - main
   
 jobs:
-  setup:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2 # Fetch repository.
-      - name: Setup
-        id: setup
-        run: |
-          npm ci
-          npm run test
   deploy-to-dev:
-    needs: setup
     runs-on: ubuntu-latest
     if: ${{ github.ref != 'ref/heads/main' }}
     permissions:
@@ -30,9 +20,12 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::952488780586:role/github-deploy-to-cloudformation-role
           aws-region: us-east-1
-      - name: Deploy Dev
-        id: deployDev
+      - uses: actions/checkout@v2 # Fetch repository.
+      - name: Setup
+        id: setup
         run: |
+          npm ci
+          npm run test
           echo "Deploying to dev..."
           ls
           npx sst deploy --stage dev-${{ github.head_ref }}
