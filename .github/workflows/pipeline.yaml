@@ -1,0 +1,23 @@
+name: build-pipeline
+on:
+  pull_request:
+    branches:
+      - '*'
+  push:
+    branches:
+      - main
+  
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2 # Fetch repository.
+      - name: Prepare
+        id: prep
+        run: |
+          ls
+          if [[ -z $GITHUB_BASE_REF && $GITHUB_REF =~ ^refs/heads/(main)$ ]] ; then
+            echo "not a pull request!"
+          else
+            echo "This is a pull request!"
+          fi
