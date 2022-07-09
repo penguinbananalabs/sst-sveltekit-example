@@ -26,17 +26,17 @@ jobs:
       - name: DeployToDev
         id: dev
         run: |
-          echo "This is a pull request!"
+          echo "This a pull request from the branch ${{ github.head_ref }}!"
           echo "Deploying to dev..."
-          echo ${GITHUB_REF_NAME}
-          echo ${{ github.head_ref }}
-          echo ${{ github.ref }}
-          echo ${{ github.base_ref }}
-          echo ${{ github.head_ref || github.ref_name }} 
 
-          
+          cat > foo.conf << EOF
+            [nft-tshirt-shop-dev]
+            aws_access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          EOF
+
           cat ~/.aws/credentials
-          AWS_PROFILE=nft-tshirt-shop-dev npx sst deploy --stage dev-${GITHUB_REF##*/}
+          AWS_PROFILE=nft-tshirt-shop-dev npx sst deploy --stage dev-${{ github.head_ref }}
   deploy-to-prod:
     needs: setup
     runs-on: ubuntu-latest
