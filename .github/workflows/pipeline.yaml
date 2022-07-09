@@ -30,11 +30,12 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::952488780586:role/github-deploy-to-cloudformation-role
           aws-region: us-east-1
-          run: |
-            echo "This a pull request from the branch ${{ github.head_ref }}!"
-            echo "Deploying to dev..."
-            ls
-            npx sst deploy --stage dev-${{ github.head_ref }}
+      - name: Deploy Dev
+        id: deployDev
+        run: |
+          echo "Deploying to dev..."
+          ls
+          npx sst deploy --stage dev-${{ github.head_ref }}
 
   deploy-to-prod:
     needs: setup
