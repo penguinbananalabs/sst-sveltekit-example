@@ -23,20 +23,17 @@ jobs:
     if: ${{ github.ref != 'ref/heads/main' }}
     steps:
       - uses: actions/checkout@v2 # Fetch repository.
-      - name: DeployToDev
-        id: dev
-        run: |
-          echo "This a pull request from the branch ${{ github.head_ref }}!"
-          echo "Deploying to dev..."
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::952488780586:role/github-deploy-to-cloudformation-role
+          aws-region: us-east-1
+          run: |
+            echo "This a pull request from the branch ${{ github.head_ref }}!"
+            echo "Deploying to dev..."
+            ls
+            npx sst deploy --stage dev-${{ github.head_ref }}
 
-          cat > foo.conf << EOF
-            [nft-tshirt-shop-dev]
-            aws_access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID }}
-            aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          EOF
-
-          cat ~/.aws/credentials
-          AWS_PROFILE=nft-tshirt-shop-dev npx sst deploy --stage dev-${{ github.head_ref }}
   deploy-to-prod:
     needs: setup
     runs-on: ubuntu-latest
