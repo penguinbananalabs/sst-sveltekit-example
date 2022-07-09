@@ -1,4 +1,4 @@
-name: build-pipeline
+name: Deployment Pipeline
 on:
   pull_request:
     branches:
@@ -8,16 +8,25 @@ on:
       - main
   
 jobs:
-  deploy:
+  deploy-to-dev:
     runs-on: ubuntu-latest
+    if: contains('refs/heads/main', github.ref)!
     steps:
       - uses: actions/checkout@v2 # Fetch repository.
       - name: Prepare
         id: prep
         run: |
           ls
-          if [[ -z $GITHUB_BASE_REF && $GITHUB_REF =~ ^refs/heads/(main)$ ]] ; then
-            echo "not a pull request!"
-          else
-            echo "This is a pull request!"
-          fi
+          echo "This is a pull request!"
+          echo "Deploying to dev..."
+  deploy-to-prod:
+    runs-on: ubuntu-latest
+    if: contains('refs/heads/main', github.ref)
+    steps:
+      - uses: actions/checkout@v2 # Fetch repository.
+      - name: Prepare
+        id: prep
+        run: |
+          ls
+          echo "This is Main!"
+          echo "Deploying to production..."
