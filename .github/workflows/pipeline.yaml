@@ -10,9 +10,6 @@ on:
 jobs:
   setup:
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      contents: read
     steps:
       - uses: actions/checkout@v2 # Fetch repository.
       - name: Setup
@@ -24,6 +21,9 @@ jobs:
     needs: setup
     runs-on: ubuntu-latest
     if: ${{ github.ref != 'ref/heads/main' }}
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - uses: actions/checkout@v2 # Fetch repository.
       - name: Configure AWS Credentials
@@ -41,6 +41,9 @@ jobs:
     needs: setup
     runs-on: ubuntu-latest
     if: ${{ github.ref == 'ref/heads/main' }}
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - uses: actions/checkout@v2 # Fetch repository.
       - name: DeployToProd
