@@ -10,7 +10,7 @@ on:
 jobs:
   deploy-to-dev:
     runs-on: ubuntu-latest
-    if: contains('refs/heads/main', github.ref)!
+    if: ${{ github.ref != 'ref/heads/main' }}
     steps:
       - uses: actions/checkout@v2 # Fetch repository.
       - name: Prepare
@@ -21,7 +21,7 @@ jobs:
           echo "Deploying to dev..."
   deploy-to-prod:
     runs-on: ubuntu-latest
-    if: contains('refs/heads/main', github.ref)
+    if: ${{ github.ref == 'ref/heads/main' }}
     steps:
       - uses: actions/checkout@v2 # Fetch repository.
       - name: Prepare
