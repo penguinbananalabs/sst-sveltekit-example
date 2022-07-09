@@ -28,7 +28,14 @@ jobs:
         run: |
           echo "This is a pull request!"
           echo "Deploying to dev..."
-          echo ${GITHUB_REF}
+          echo ${GITHUB_REF_NAME}
+          echo ${{ github.head_ref }}
+          echo ${{ github.ref }}
+          echo ${{ github.base_ref }}
+          echo ${{ github.head_ref || github.ref_name }} 
+
+          
+          cat ~/.aws/credentials
           AWS_PROFILE=nft-tshirt-shop-dev npx sst deploy --stage dev-${GITHUB_REF##*/}
   deploy-to-prod:
     needs: setup
