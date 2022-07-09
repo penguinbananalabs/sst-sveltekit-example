@@ -26,6 +26,9 @@ jobs:
         run: |
           npm ci
           npm run test
+          cd ./frontend
+          npm ci
+          cd ..
           echo "Deploying to dev..."
           ls
           npx sst deploy --stage dev-${{ github.head_ref }}
