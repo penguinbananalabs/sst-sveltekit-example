@@ -18,7 +18,7 @@ jobs:
           npm ci
           npm run test
   deploy-to-dev:
-    need: setup
+    needs: setup
     runs-on: ubuntu-latest
     if: ${{ github.ref != 'ref/heads/main' }}
     steps:
@@ -31,7 +31,7 @@ jobs:
           ${GITHUB_REF##*/}
           AWS_PROFILE=nft-tshirt-shop-dev npx sst deploy --stage dev-${GITHUB_REF##*/}
   deploy-to-prod:
-    need: setup
+    needs: setup
     runs-on: ubuntu-latest
     if: ${{ github.ref == 'ref/heads/main' }}
     steps:
