@@ -25,7 +25,6 @@ jobs:
       id-token: write
       contents: read
     steps:
-      - uses: actions/checkout@v2 # Fetch repository.
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
