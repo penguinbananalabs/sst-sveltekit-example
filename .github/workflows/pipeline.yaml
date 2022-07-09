@@ -8,24 +8,36 @@ on:
       - main
   
 jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2 # Fetch repository.
+      - name: Setup
+        id: setup
+        run: |
+          npm ci
+          npm run test
   deploy-to-dev:
+    need: setup
     runs-on: ubuntu-latest
     if: ${{ github.ref != 'ref/heads/main' }}
     steps:
       - uses: actions/checkout@v2 # Fetch repository.
-      - name: Prepare
-        id: prep
+      - name: DeployToDev
+        id: dev
         run: |
-          ls
           echo "This is a pull request!"
           echo "Deploying to dev..."
+          ${GITHUB_REF##*/}
+          AWS_PROFILE=nft-tshirt-shop-dev npx sst deploy --stage dev-${GITHUB_REF##*/}
   deploy-to-prod:
+    need: setup
     runs-on: ubuntu-latest
     if: ${{ github.ref == 'ref/heads/main' }}
     steps:
       - uses: actions/checkout@v2 # Fetch repository.
-      - name: Prepare
-        id: prep
+      - name: DeployToProd
+        id: prod
         run: |
           ls
           echo "This is Main!"
