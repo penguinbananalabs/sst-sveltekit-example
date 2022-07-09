@@ -31,7 +31,6 @@ jobs:
           npx sst deploy --stage dev-${{ github.head_ref }}
 
   deploy-to-prod:
-    needs: setup
     runs-on: ubuntu-latest
     if: ${{ github.ref == 'ref/heads/main' }}
     permissions:
