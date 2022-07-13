@@ -1,4 +1,4 @@
-name: Remove Branch Deploye
+name: Remove Branch Deploy
 on:
   pull_request:
     branches:
