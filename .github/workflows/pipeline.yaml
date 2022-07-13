@@ -18,11 +18,13 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: arn:aws:iam::952488780586:role/github-deploy-to-cloudformation-role
           aws-region: us-east-1
-      - uses: actions/checkout@v2 # Fetch repository.
+          role-to-assume: arn:aws:iam::952488780586:role/github-deploy-to-cloudformation-role
+
+      - name: Fetch Repo Code
+        uses: actions/checkout@v2
+
       - name: Setup
-        id: setup
         run: |
           npm ci
           npm run test
@@ -42,12 +44,13 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: arn:aws:iam::738219726652:role/github-deploy-to-cloudformation-role
           aws-region: us-east-1
-      - uses: actions/checkout@v2 # Fetch repository.
-      # TODO: Delete branch deployment when merged to master. I left some console logs to test if we can easily get branch name
+          role-to-assume: arn:aws:iam::738219726652:role/github-deploy-to-cloudformation-role
+
+      - name: Fetch Repo Code
+        uses: actions/checkout@v2
+
       - name: Setup
-        id: setup
         run: |
           npm ci
           npm run test
@@ -56,13 +59,4 @@ jobs:
           cd ..
           echo "Deploying to Prod..."
           npx sst deploy --stage prod
-          
-          echo ${{ github.ref }}
-          echo ${{ github.ref_name }}
-
-          raw=$(git branch -r --contains ${{ github.ref }})
-          branch=${raw/origin\/}
-          echo $branch
-
-          ${{ github.event.base_ref }}
 

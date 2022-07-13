@@ -1,0 +1,28 @@
+name: Remove Branch Deploye
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - closed
+
+jobs:
+  remove-branch-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: us-east-1
+          role-to-assume: arn:aws:iam::952488780586:role/github-deploy-to-cloudformation-role
+
+      - name: Fetch Repo Code
+        uses: actions/checkout@v2
+
+      - name: Setup
+        run: |
+          npx sst remove --stage dev-${{ github.head_ref }}
+
