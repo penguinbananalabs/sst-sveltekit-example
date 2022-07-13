@@ -24,5 +24,7 @@ jobs:
 
       - name: Setup
         run: |
+          npm ci
+          echo "Removing dev deploy for this branch"
           npx sst remove --stage dev-${{ github.head_ref }}
 
