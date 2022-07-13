@@ -57,7 +57,9 @@ jobs:
           echo "Deploying to Prod..."
           npx sst deploy --stage prod
           
-          ${{ GITHUB_REF_NAME}}
+          echo ${{ github.ref }}
+          echo ${{ GITHUB_REF}}
+          echo ${{ GITHUB_REF_NAME}}
 
           raw=$(git branch -r --contains ${{ github.ref }})
           branch=${raw/origin\/}
