@@ -10,7 +10,7 @@ on:
 jobs:
   deploy-to-dev:
     runs-on: ubuntu-latest
-    if: ${{ github.ref != 'ref/heads/main' }}
+    if: ${{ github.ref != 'refs/heads/main' }}
     permissions:
       id-token: write
       contents: read
@@ -34,7 +34,7 @@ jobs:
 
   deploy-to-prod:
     runs-on: ubuntu-latest
-    if: ${{ github.ref == 'ref/heads/main' }}
+    if: ${{ github.ref == 'refs/heads/main' }}
     permissions:
       id-token: write
       contents: read
